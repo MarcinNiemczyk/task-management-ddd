@@ -16,7 +16,7 @@ from src.infrastructure.api.schemas.task_schemas import (TaskCreateRequest,
 
 router = APIRouter(
     prefix="/tasks",
-    tags=["tasks"],
+    tags=["Tasks"],
 )
 
 

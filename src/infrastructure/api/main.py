@@ -6,7 +6,7 @@ from src.infrastructure.database.config import init_db
 from src.infrastructure.database.mappers import start_mappers
 from .exception_handlers import domain_exception_handler, entity_not_found_handler, task_deadline_exceeds_project_handler
 
-from .routers import tasks
+from .routers import tasks, projects
 
 
 def create_app() -> FastAPI:
@@ -36,6 +36,7 @@ def create_app() -> FastAPI:
 
 
     app.include_router(tasks.router, prefix="/api/v1")
+    app.include_router(projects.router, prefix="/api/v1")
 
     return app
 
