@@ -21,10 +21,10 @@ class UpdateProjectUseCase:
             project = self.uow.project_repository.get(project_id)
 
             if command.title is not None:
-                project.title = command.title
+                project.update_title(command.title)
 
             if command.deadline is not None:
-                project.deadline = datetime.fromisoformat(command.deadline)
+                project.update_deadline(datetime.fromisoformat(command.deadline))
 
             updated_project = self.uow.project_repository.update(project)
 

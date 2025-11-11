@@ -137,3 +137,41 @@ class TestProjectEntity:
         assert project1.id == project2.id
         assert project1.title == project2.title
         assert project1.deadline == project2.deadline
+
+    def test_update_title_changes_title_and_timestamp(self, sample_project):
+        original_updated_at = sample_project.updated_at
+        original_title = sample_project.title
+
+        sample_project.update_title("New Project Title")
+
+        assert sample_project.title == "New Project Title"
+        assert sample_project.title != original_title
+        assert sample_project.updated_at > original_updated_at
+
+    def test_update_deadline_changes_deadline_and_timestamp(self, sample_project):
+        original_updated_at = sample_project.updated_at
+        new_deadline = datetime(2027, 12, 31, 23, 59, 59, tzinfo=timezone.utc)
+
+        sample_project.update_deadline(new_deadline)
+
+        assert sample_project.deadline == new_deadline
+        assert sample_project.updated_at > original_updated_at
+
+    def test_update_title_with_empty_string(self, sample_project):
+        sample_project.update_title("")
+
+        assert sample_project.title == ""
+
+    def test_update_methods_preserve_other_attributes(self, sample_project):
+        original_id = sample_project.id
+        original_created_at = sample_project.created_at
+        original_completed = sample_project.completed
+
+        sample_project.update_title("New Title")
+        sample_project.update_deadline(
+            datetime(2027, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
+        )
+
+        assert sample_project.id == original_id
+        assert sample_project.created_at == original_created_at
+        assert sample_project.completed == original_completed

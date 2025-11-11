@@ -1,7 +1,9 @@
 from fastapi import Request, status
 from fastapi.responses import JSONResponse
 from src.domain.exceptions.base import EntityNotFoundException, DomainException
-from src.domain.exceptions.task_exceptions import TaskDeadlineExceedsProjectDeadlineException
+from src.domain.exceptions.task_exceptions import (
+    TaskDeadlineExceedsProjectDeadlineException,
+)
 
 
 async def entity_not_found_handler(

@@ -26,10 +26,10 @@ class UpdateTaskUseCase:
             task = self.uow.task_repository.get(task_id)
 
             if command.title is not None:
-                task.title = command.title
+                task.update_title(command.title)
 
             if command.description is not None:
-                task.description = command.description
+                task.update_description(command.description)
 
             if command.deadline is not None:
                 if task.project_id is not None:
@@ -37,7 +37,7 @@ class UpdateTaskUseCase:
                     self.deadline_service.ensure_task_deadline_within_project(
                         task, project
                     )
-                task.deadline = datetime.fromisoformat(command.deadline)
+                task.update_deadline(datetime.fromisoformat(command.deadline))
 
             updated_task = self.uow.task_repository.update(task)
 

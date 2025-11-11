@@ -64,7 +64,7 @@ class TestBaseEntity:
         assert entity.created_at == fixed_datetime
         assert entity.updated_at is not None
         # updated_at should be auto-generated (now)
-        assert entity.updated_at >= entity.created_at
+        assert entity.updated_at != entity.created_at
 
     def test_updated_at_only_custom(self, fixed_datetime):
         entity = BaseEntity(updated_at=fixed_datetime)

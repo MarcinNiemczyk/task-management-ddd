@@ -22,8 +22,8 @@ class CreateProjectUseCase:
             title=command.title,
             deadline=datetime.fromisoformat(command.deadline),
         )
-        
+
         with self.uow.transaction():
             created_project = self.uow.project_repository.add(project)
-            
+
         return created_project

@@ -5,13 +5,12 @@ from src.domain.entities.task import Task
 
 
 class TestTaskEntity:
-
     def test_create_task_with_required_fields(self, future_datetime):
         task = Task(
             title="Test Task",
             deadline=future_datetime,
         )
-        
+
         assert task.title == "Test Task"
         assert task.deadline == future_datetime
         assert task.description is None
@@ -21,11 +20,13 @@ class TestTaskEntity:
         assert isinstance(task.created_at, datetime)
         assert isinstance(task.updated_at, datetime)
 
-    def test_create_task_with_all_fields(self, fixed_uuid, fixed_datetime, future_datetime):
+    def test_create_task_with_all_fields(
+        self, fixed_uuid, fixed_datetime, future_datetime
+    ):
         project_id = uuid4()
         created = fixed_datetime
         updated = datetime(2025, 11, 16, 12, 0, 0, tzinfo=timezone.utc)
-        
+
         task = Task(
             id=fixed_uuid,
             title="Complete Task",
@@ -36,7 +37,7 @@ class TestTaskEntity:
             created_at=created,
             updated_at=updated,
         )
-        
+
         assert task.id == fixed_uuid
         assert task.title == "Complete Task"
         assert task.description == "This is a detailed description"
@@ -47,9 +48,9 @@ class TestTaskEntity:
         assert task.updated_at == updated
 
     def test_task_inherits_from_base_entity(self, sample_task):
-        assert hasattr(sample_task, 'id')
-        assert hasattr(sample_task, 'created_at')
-        assert hasattr(sample_task, 'updated_at')
+        assert hasattr(sample_task, "id")
+        assert hasattr(sample_task, "created_at")
+        assert hasattr(sample_task, "updated_at")
         assert isinstance(sample_task.id, UUID)
         assert isinstance(sample_task.created_at, datetime)
         assert isinstance(sample_task.updated_at, datetime)
@@ -64,7 +65,7 @@ class TestTaskEntity:
             description="Detailed description here",
             deadline=future_datetime,
         )
-        
+
         assert task.description == "Detailed description here"
 
     def test_task_not_completed_by_default(self, future_datetime):
@@ -72,7 +73,7 @@ class TestTaskEntity:
             title="New Task",
             deadline=future_datetime,
         )
-        
+
         assert task.completed is False
 
     def test_task_can_be_created_completed(self, completed_task):
@@ -87,38 +88,38 @@ class TestTaskEntity:
 
     def test_task_title_attribute(self, sample_task):
         assert sample_task.title == "Sample Task"
-        
+
         sample_task.title = "Updated Title"
         assert sample_task.title == "Updated Title"
 
     def test_task_deadline_attribute(self, sample_task, future_datetime):
         assert sample_task.deadline == future_datetime
-        
+
         new_deadline = datetime(2026, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
         sample_task.deadline = new_deadline
         assert sample_task.deadline == new_deadline
 
     def test_task_completed_status_can_change(self, sample_task):
         assert sample_task.completed is False
-        
+
         sample_task.completed = True
         assert sample_task.completed is True
-        
+
         sample_task.completed = False
         assert sample_task.completed is False
 
     def test_task_description_can_be_updated(self, sample_task):
         assert sample_task.description == "This is a sample task"
-        
+
         sample_task.description = "Updated description"
         assert sample_task.description == "Updated description"
-        
+
         sample_task.description = None
         assert sample_task.description is None
 
     def test_task_project_id_can_be_assigned(self, sample_task):
         assert sample_task.project_id is None
-        
+
         new_project_id = uuid4()
         sample_task.project_id = new_project_id
         assert sample_task.project_id == new_project_id
@@ -127,7 +128,7 @@ class TestTaskEntity:
         task1 = Task(title="Task 1", deadline=future_datetime)
         task2 = Task(title="Task 2", deadline=future_datetime)
         task3 = Task(title="Task 3", deadline=future_datetime)
-        
+
         assert task1.id != task2.id
         assert task2.id != task3.id
         assert task1.id != task3.id
@@ -143,3 +144,56 @@ class TestTaskEntity:
             deadline=future_datetime,
         )
         assert task.description == ""
+
+    def test_mark_as_completed_updates_status_and_timestamp(self, sample_task):
+        original_updated_at = sample_task.updated_at
+        assert sample_task.completed is False
+
+        sample_task.mark_as_completed()
+
+        assert sample_task.completed is True
+        assert sample_task.updated_at > original_updated_at
+
+    def test_mark_as_incomplete_updates_status_and_timestamp(self, completed_task):
+        original_updated_at = completed_task.updated_at
+        assert completed_task.completed is True
+
+        completed_task.mark_as_incomplete()
+
+        assert completed_task.completed is False
+        assert completed_task.updated_at > original_updated_at
+
+    def test_update_title_changes_title_and_timestamp(self, sample_task):
+        original_updated_at = sample_task.updated_at
+        original_title = sample_task.title
+
+        sample_task.update_title("New Title")
+
+        assert sample_task.title == "New Title"
+        assert sample_task.title != original_title
+        assert sample_task.updated_at > original_updated_at
+
+    def test_update_description_changes_description_and_timestamp(self, sample_task):
+        original_updated_at = sample_task.updated_at
+
+        sample_task.update_description("New description")
+
+        assert sample_task.description == "New description"
+        assert sample_task.updated_at > original_updated_at
+
+    def test_update_description_to_none_and_timestamp(self, sample_task):
+        original_updated_at = sample_task.updated_at
+
+        sample_task.update_description(None)
+
+        assert sample_task.description is None
+        assert sample_task.updated_at > original_updated_at
+
+    def test_update_deadline_changes_deadline_and_timestamp(self, sample_task):
+        original_updated_at = sample_task.updated_at
+        new_deadline = datetime(2026, 6, 15, 10, 0, 0, tzinfo=timezone.utc)
+
+        sample_task.update_deadline(new_deadline)
+
+        assert sample_task.deadline == new_deadline
+        assert sample_task.updated_at > original_updated_at

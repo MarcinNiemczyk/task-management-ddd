@@ -1,7 +1,6 @@
 from datetime import datetime, timezone
 
-from sqlalchemy import (Boolean, Column, DateTime, Index, String,
-                        Table, UUID)
+from sqlalchemy import Boolean, Column, DateTime, Index, String, Table, UUID
 
 from src.infrastructure.database.config import mapper_registry
 

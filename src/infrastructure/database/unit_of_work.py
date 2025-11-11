@@ -8,8 +8,6 @@ from src.domain.ports.repositories.task_repository import ITaskRepository
 from src.domain.ports.unit_of_work import IUnitOfWork
 
 from src.infrastructure.database.config import SessionLocal
-from src.infrastructure.database.repositories.project_repository import ProjectRepository
-from src.infrastructure.database.repositories.task_repository import TaskRepository
 
 
 class UnitOfWork(IUnitOfWork):
@@ -20,7 +18,7 @@ class UnitOfWork(IUnitOfWork):
     ) -> None:
         self._task_repository_factory = task_repository_factory
         self._project_repository_factory = project_repository_factory
-        
+
         self._task_repository: ITaskRepository | None = None
         self._project_repository: IProjectRepository | None = None
 
@@ -33,7 +31,7 @@ class UnitOfWork(IUnitOfWork):
 
             yield
 
-            session.commit()    
+            session.commit()
         except Exception:
             session.rollback()
             raise

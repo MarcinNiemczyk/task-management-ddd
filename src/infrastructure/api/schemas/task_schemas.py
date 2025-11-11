@@ -103,3 +103,18 @@ class TaskUpdateRequest(BaseModel):
             }
         }
     )
+
+
+class TaskCompleteRequest(BaseModel):
+    completed: bool = Field(
+        description="Mark task as completed (true) or incomplete (false)",
+        examples=[True],
+    )
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "completed": True,
+            }
+        }
+    )

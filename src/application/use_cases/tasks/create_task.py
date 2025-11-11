@@ -32,7 +32,7 @@ class CreateTaskUseCase:
             if command.project_id:
                 project = self.uow.project_repository.get(command.project_id)
                 self.deadline_service.ensure_task_deadline_within_project(task, project)
-            
+
             created_task = self.uow.task_repository.add(task)
-            
+
         return created_task

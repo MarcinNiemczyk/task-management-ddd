@@ -4,10 +4,10 @@ from fastapi import Depends
 
 from src.domain.ports.unit_of_work import IUnitOfWork
 from src.domain.services.deadline_service import DeadlineValidationService
-from src.infrastructure.database.repositories.project_repository import \
-    ProjectRepository
-from src.infrastructure.database.repositories.task_repository import \
-    TaskRepository
+from src.infrastructure.database.repositories.project_repository import (
+    ProjectRepository,
+)
+from src.infrastructure.database.repositories.task_repository import TaskRepository
 from src.infrastructure.database.unit_of_work import UnitOfWork
 
 

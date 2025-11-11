@@ -40,9 +40,7 @@ class TaskRepository(ITaskRepository):
             if overdue:
                 query = query.filter(Task.deadline < now, Task.completed == False)
             else:
-                query = query.filter(
-                    (Task.deadline >= now) | (Task.completed == True)
-                )
+                query = query.filter((Task.deadline >= now) | (Task.completed == True))
 
         if project_id is not None:
             query = query.filter(Task.project_id == project_id)

@@ -1,5 +1,5 @@
-from sqlalchemy import MetaData, create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker, registry
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, registry
 
 DATABASE_URL = "sqlite:///./task_management.db"
 
@@ -9,7 +9,9 @@ engine = create_engine(
     echo=False,
 )
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, expire_on_commit=False, bind=engine)
+SessionLocal = sessionmaker(
+    autocommit=False, autoflush=False, expire_on_commit=False, bind=engine
+)
 
 mapper_registry = registry()
 

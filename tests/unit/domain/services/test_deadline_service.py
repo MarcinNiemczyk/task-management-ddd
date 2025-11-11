@@ -4,8 +4,9 @@ import pytest
 
 from src.domain.entities.project import Project
 from src.domain.entities.task import Task
-from src.domain.exceptions.task_exceptions import \
-    TaskDeadlineExceedsProjectDeadlineException
+from src.domain.exceptions.task_exceptions import (
+    TaskDeadlineExceedsProjectDeadlineException,
+)
 from src.domain.services.deadline_service import DeadlineValidationService
 
 

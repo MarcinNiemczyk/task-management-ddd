@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from uuid import UUID
 
 from src.domain.entities.base import BaseEntity
@@ -18,3 +18,11 @@ class Project(BaseEntity):
         self.title = title
         self.deadline = deadline
         self.completed = completed
+
+    def update_title(self, title: str) -> None:
+        self.title = title
+        self.updated_at = datetime.now(timezone.utc)
+
+    def update_deadline(self, deadline: datetime) -> None:
+        self.deadline = deadline
+        self.updated_at = datetime.now(timezone.utc)
