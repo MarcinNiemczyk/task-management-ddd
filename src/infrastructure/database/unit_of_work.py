@@ -1,17 +1,26 @@
 from contextlib import contextmanager
-from typing import Generator
+from typing import Generator, Callable
+
+from sqlalchemy.orm import Session
 
 from src.domain.ports.repositories.project_repository import IProjectRepository
 from src.domain.ports.repositories.task_repository import ITaskRepository
 from src.domain.ports.unit_of_work import IUnitOfWork
 
 from src.infrastructure.database.config import SessionLocal
-# from src.infrastructure.database.repositories.project_repository import ProjectRepository
+from src.infrastructure.database.repositories.project_repository import ProjectRepository
 from src.infrastructure.database.repositories.task_repository import TaskRepository
 
 
 class UnitOfWork(IUnitOfWork):
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        task_repository_factory: Callable[[Session], ITaskRepository],
+        project_repository_factory: Callable[[Session], IProjectRepository],
+    ) -> None:
+        self._task_repository_factory = task_repository_factory
+        self._project_repository_factory = project_repository_factory
+        
         self._task_repository: ITaskRepository | None = None
         self._project_repository: IProjectRepository | None = None
 
@@ -19,19 +28,19 @@ class UnitOfWork(IUnitOfWork):
     def transaction(self) -> Generator[None, None, None]:
         session = SessionLocal()
         try:
-            self._task_repository = TaskRepository(session)
-            # self._project_repository = ProjectRepository(session)
+            self._task_repository = self._task_repository_factory(session)
+            self._project_repository = self._project_repository_factory(session)
 
             yield
 
-            session.commit()
+            session.commit()    
         except Exception:
             session.rollback()
             raise
         finally:
             session.close()
             self._task_repository = None
-            # self._project_repository = None
+            self._project_repository = None
 
     @property
     def task_repository(self) -> ITaskRepository:

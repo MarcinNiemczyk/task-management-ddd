@@ -72,3 +72,34 @@ class TaskResponse(BaseModel):
             completed=task.completed,
             project_id=task.project_id,
         )
+
+
+class TaskUpdateRequest(BaseModel):
+    title: str | None = Field(
+        default=None,
+        min_length=1,
+        max_length=200,
+        description="Task title",
+        examples=["Buy groceries"],
+    )
+    description: str | None = Field(
+        default=None,
+        max_length=1000,
+        description="Task description",
+        examples=["Buy milk, bread, and eggs from the store"],
+    )
+    deadline: str | None = Field(
+        default=None,
+        description="Task deadline in ISO 8601 format",
+        examples=["2025-12-31T23:59:59Z"],
+    )
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "title": "Buy groceries",
+                "description": "Buy milk, bread, and eggs",
+                "deadline": "2025-11-15T18:00:00Z",
+            }
+        }
+    )

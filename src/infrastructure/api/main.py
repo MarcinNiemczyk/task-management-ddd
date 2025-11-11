@@ -1,7 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from src.domain.exceptions.task_exceptions import TaskDeadlineExceedsProjectDeadlineException
+from src.domain.exceptions.base import DomainException, EntityNotFoundException
 from src.infrastructure.database.config import init_db
 from src.infrastructure.database.mappers import start_mappers
+from .exception_handlers import domain_exception_handler, entity_not_found_handler, task_deadline_exceeds_project_handler
 
 from .routers import tasks
 
@@ -26,6 +29,11 @@ def create_app() -> FastAPI:
 
     init_db()
     start_mappers()
+
+    app.add_exception_handler(EntityNotFoundException, entity_not_found_handler)
+    app.add_exception_handler(DomainException, domain_exception_handler)
+    app.add_exception_handler(TaskDeadlineExceedsProjectDeadlineException, task_deadline_exceeds_project_handler)
+
 
     app.include_router(tasks.router, prefix="/api/v1")
 

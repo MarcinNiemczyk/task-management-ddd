@@ -1,7 +1,8 @@
 from datetime import datetime, timezone
 
-from sqlalchemy import (Boolean, Column, DateTime, Index, MetaData, String,
-                        Table)
+from sqlalchemy import (Boolean, Column, DateTime, Index, String,
+                        Table, UUID)
+
 from src.infrastructure.database.config import mapper_registry
 
 
@@ -12,7 +13,7 @@ def utcnow():
 projects = Table(
     "projects",
     mapper_registry.metadata,
-    Column("id", String(36), primary_key=True),
+    Column("id", UUID, primary_key=True),
     Column("title", String(255), nullable=False),
     Column("deadline", DateTime, nullable=False),
     Column("completed", Boolean, default=False, nullable=False),
