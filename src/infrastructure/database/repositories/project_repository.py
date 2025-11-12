@@ -3,6 +3,7 @@ from uuid import UUID
 from sqlalchemy.orm import Session
 
 from src.domain.entities.project import Project
+from src.domain.entities.task import Task
 from src.domain.exceptions.base import EntityNotFoundException
 from src.domain.ports.repositories.project_repository import IProjectRepository
 
@@ -42,3 +43,12 @@ class ProjectRepository(IProjectRepository):
             raise EntityNotFoundException("Project", project_id)
 
         self._session.delete(project)
+
+    def has_other_open_tasks(self, project_id: UUID) -> bool:
+        count = (
+            self._session.query(Task)
+            .filter(Task.project_id == project_id, Task.completed == False)
+            .count()
+        )
+        # Ignore current task being completed
+        return count > 1

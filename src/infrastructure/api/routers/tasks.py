@@ -9,15 +9,14 @@ from src.application.use_cases.tasks.create_task import (
 from src.application.use_cases.tasks.delete_task import DeleteTaskUseCase
 from src.application.use_cases.tasks.get_all_tasks import GetAllTasksUseCase
 from src.application.use_cases.tasks.get_task import GetTaskUseCase
-from src.application.use_cases.tasks.mark_as_completed import (
-    MarkTaskAsCompletedCommand,
-    MarkTaskAsCompletedUseCase,
-)
+from src.application.use_cases.tasks.mark_as_completed import MarkTaskAsCompletedUseCase
+from src.application.use_cases.tasks.mark_as_incomplete import MarkTaskAsIncompleteUseCase
 from src.application.use_cases.tasks.update_task import (
     UpdateTaskCommand,
     UpdateTaskUseCase,
 )
 from src.infrastructure.api.dependencies import (
+    EnvConfigServiceDependency,
     UoWDependency,
     DeadlineValidationServiceImpl,
 )
@@ -128,10 +127,13 @@ def update_task(
 def mark_task_as_completed(
     task_id: UUID,
     completed_in: TaskCompleteRequest,
+    config: EnvConfigServiceDependency,
     uow: UoWDependency,
 ) -> TaskResponse:
-    command = MarkTaskAsCompletedCommand(completed=completed_in.completed)
-    task = MarkTaskAsCompletedUseCase(uow).execute(task_id, command)
+    if completed_in.completed:
+        task = MarkTaskAsCompletedUseCase(uow, config).execute(task_id)
+    else:
+        task = MarkTaskAsIncompleteUseCase(uow).execute(task_id)
     return TaskResponse.from_entity(task)
 
 

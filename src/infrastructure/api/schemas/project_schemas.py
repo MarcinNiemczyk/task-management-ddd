@@ -32,6 +32,7 @@ class ProjectResponse(BaseModel):
     id: UUID
     title: str
     deadline: datetime
+    completed: bool
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -49,6 +50,7 @@ class ProjectResponse(BaseModel):
             id=project.id,
             title=project.title,
             deadline=project.deadline,
+            completed=project.completed,
         )
 
 

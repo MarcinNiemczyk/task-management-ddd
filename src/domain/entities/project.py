@@ -26,3 +26,7 @@ class Project(BaseEntity):
     def update_deadline(self, deadline: datetime) -> None:
         self.deadline = deadline
         self.updated_at = datetime.now(timezone.utc)
+
+    def mark_as_completed(self) -> None:
+        self.completed = True
+        self.updated_at = datetime.now(timezone.utc)

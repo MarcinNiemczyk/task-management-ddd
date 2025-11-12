@@ -24,3 +24,7 @@ class IProjectRepository(ABC):
     @abstractmethod
     def delete(self, project_id: UUID) -> None:
         pass
+
+    @abstractmethod
+    def has_other_open_tasks(self, project_id: UUID) -> bool:
+        pass

@@ -2,8 +2,10 @@ from typing import Annotated
 
 from fastapi import Depends
 
+from src.domain.ports.config_port import ConfigPort
 from src.domain.ports.unit_of_work import IUnitOfWork
 from src.domain.services.deadline_service import DeadlineValidationService
+from src.infrastructure.config.env_config_service import EnvConfigService
 from src.infrastructure.database.repositories.project_repository import (
     ProjectRepository,
 )
@@ -20,3 +22,4 @@ def get_unit_of_work() -> IUnitOfWork:
 
 UoWDependency = Annotated[IUnitOfWork, Depends(get_unit_of_work)]
 DeadlineValidationServiceImpl = DeadlineValidationService()
+EnvConfigServiceDependency = Annotated[ConfigPort, Depends(EnvConfigService)]
