@@ -30,3 +30,7 @@ class Project(BaseEntity):
     def mark_as_completed(self) -> None:
         self.completed = True
         self.updated_at = datetime.now(timezone.utc)
+
+    def mark_as_incomplete(self) -> None:
+        self.completed = False
+        self.updated_at = datetime.now(timezone.utc)

@@ -18,8 +18,8 @@ class MarkTaskAsCompletedUseCase:
             updated_task = self.uow.task_repository.update(task)
 
             if task.project_id:
-                has_other_open_tasks = self.uow.project_repository.has_other_open_tasks(
-                    task.project_id
+                has_other_open_tasks = (
+                    self.uow.project_repository.count_open_tasks(task.project_id) > 1
                 )
                 auto_complete_project = (
                     self.config.auto_complete_project_on_last_task_done()

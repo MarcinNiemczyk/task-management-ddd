@@ -44,11 +44,9 @@ class ProjectRepository(IProjectRepository):
 
         self._session.delete(project)
 
-    def has_other_open_tasks(self, project_id: UUID) -> bool:
-        count = (
+    def count_open_tasks(self, project_id: UUID) -> int:
+        return (
             self._session.query(Task)
             .filter(Task.project_id == project_id, Task.completed == False)
             .count()
         )
-        # Ignore current task being completed
-        return count > 1

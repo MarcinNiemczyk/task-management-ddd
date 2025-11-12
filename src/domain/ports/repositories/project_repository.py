@@ -26,5 +26,5 @@ class IProjectRepository(ABC):
         pass
 
     @abstractmethod
-    def has_other_open_tasks(self, project_id: UUID) -> bool:
+    def count_open_tasks(self, project_id: UUID) -> int:
         pass
