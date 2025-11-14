@@ -8,6 +8,7 @@ from src.application.use_cases.projects.create_project import (
 )
 from src.application.use_cases.projects.get_all_projects import GetAllProjectsUseCase
 from src.application.use_cases.projects.get_project import GetProjectUseCase
+from src.application.use_cases.projects.get_project_tasks import GetProjectTasksUseCase
 from src.application.use_cases.projects.update_project import (
     UpdateProjectCommand,
     UpdateProjectUseCase,
@@ -18,6 +19,7 @@ from src.infrastructure.api.schemas.project_schemas import (
     ProjectResponse,
     ProjectUpdateRequest,
 )
+from src.infrastructure.api.schemas.task_schemas import TaskResponse
 
 router = APIRouter(
     prefix="/projects",
@@ -95,3 +97,18 @@ def update_project(
     project = UpdateProjectUseCase(uow).execute(project_id, command)
 
     return ProjectResponse.from_entity(project)
+
+
+@router.get(
+    "/{id}/tasks",
+    response_model=list[TaskResponse],
+    status_code=status.HTTP_200_OK,
+    summary="Get all tasks for a project",
+    description="Retrieves all tasks associated with a specific project.",
+)
+def get_project_tasks(
+    id: UUID,
+    uow: UoWDependency,
+) -> list[TaskResponse]:
+    tasks = GetProjectTasksUseCase(uow).execute(id)
+    return [TaskResponse.from_entity(task) for task in tasks]

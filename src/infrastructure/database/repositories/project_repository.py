@@ -50,3 +50,10 @@ class ProjectRepository(IProjectRepository):
             .filter(Task.project_id == project_id, Task.completed == False)
             .count()
         )
+
+    def get_tasks(self, project_id: UUID) -> list[Task]:
+        return (
+            self._session.query(Task)
+            .filter(Task.project_id == project_id)
+            .all()
+        )

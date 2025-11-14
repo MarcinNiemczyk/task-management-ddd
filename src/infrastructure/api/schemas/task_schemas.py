@@ -48,6 +48,8 @@ class TaskResponse(BaseModel):
     deadline: datetime
     completed: bool
     project_id: UUID | None
+    created_at: datetime
+    updated_at: datetime
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -58,6 +60,8 @@ class TaskResponse(BaseModel):
                 "deadline": "2025-11-15T18:00:00Z",
                 "completed": False,
                 "project_id": None,
+                "created_at": "2023-10-10T10:00:00Z",
+                "updated_at": "2023-10-10T10:00:00Z",
             }
         },
     )
@@ -71,6 +75,8 @@ class TaskResponse(BaseModel):
             deadline=task.deadline,
             completed=task.completed,
             project_id=task.project_id,
+            created_at=task.created_at,
+            updated_at=task.updated_at,
         )
 
 

@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from uuid import UUID
 
 from src.domain.entities.project import Project
+from src.domain.entities.task import Task
 
 
 class IProjectRepository(ABC):
@@ -27,4 +28,8 @@ class IProjectRepository(ABC):
 
     @abstractmethod
     def count_open_tasks(self, project_id: UUID) -> int:
+        pass
+
+    @abstractmethod
+    def get_tasks(self, project_id: UUID) -> list[Task]:
         pass
