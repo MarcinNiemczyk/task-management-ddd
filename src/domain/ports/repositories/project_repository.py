@@ -27,6 +27,10 @@ class IProjectRepository(ABC):
         pass
 
     @abstractmethod
+    def delete_project_tasks(self, project_id: UUID) -> None:
+        pass
+
+    @abstractmethod
     def count_open_tasks(self, project_id: UUID) -> int:
         pass
 

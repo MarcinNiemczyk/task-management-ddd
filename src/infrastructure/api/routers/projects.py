@@ -6,6 +6,7 @@ from src.application.use_cases.projects.create_project import (
     CreateProjectCommand,
     CreateProjectUseCase,
 )
+from src.application.use_cases.projects.delete_project import DeleteProjectUseCase
 from src.application.use_cases.projects.get_all_projects import GetAllProjectsUseCase
 from src.application.use_cases.projects.get_project import GetProjectUseCase
 from src.application.use_cases.projects.get_project_tasks import GetProjectTasksUseCase
@@ -112,3 +113,16 @@ def get_project_tasks(
 ) -> list[TaskResponse]:
     tasks = GetProjectTasksUseCase(uow).execute(id)
     return [TaskResponse.from_entity(task) for task in tasks]
+
+
+@router.delete(
+    "/{id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Delete a project",
+    description="Deletes a project and all its associated tasks.",
+)
+def delete_project(
+    id: UUID,
+    uow: UoWDependency,
+) -> None:
+    DeleteProjectUseCase(uow).execute(id)

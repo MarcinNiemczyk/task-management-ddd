@@ -44,6 +44,9 @@ class ProjectRepository(IProjectRepository):
 
         self._session.delete(project)
 
+    def delete_project_tasks(self, project_id: UUID) -> None:
+        self._session.query(Task).filter(Task.project_id == project_id).delete()
+
     def count_open_tasks(self, project_id: UUID) -> int:
         return (
             self._session.query(Task)
