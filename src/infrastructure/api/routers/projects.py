@@ -10,6 +10,8 @@ from src.application.use_cases.projects.delete_project import DeleteProjectUseCa
 from src.application.use_cases.projects.get_all_projects import GetAllProjectsUseCase
 from src.application.use_cases.projects.get_project import GetProjectUseCase
 from src.application.use_cases.projects.get_project_tasks import GetProjectTasksUseCase
+from src.application.use_cases.projects.link_task import LinkTaskToProjectUseCase
+from src.application.use_cases.projects.unlink_task import UnlinkTaskFromProjectUseCase
 from src.application.use_cases.projects.update_project import (
     UpdateProjectCommand,
     UpdateProjectUseCase,
@@ -126,3 +128,31 @@ def delete_project(
     uow: UoWDependency,
 ) -> None:
     DeleteProjectUseCase(uow).execute(id)
+
+
+@router.post(
+    "/{project_id}/tasks/{task_id}/link",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Link a task to a project",
+    description="Links an existing task to a project.",
+)
+def link_task_to_project(
+    project_id: UUID,
+    task_id: UUID,
+    uow: UoWDependency,
+) -> None:
+    LinkTaskToProjectUseCase(uow).execute(project_id, task_id)
+
+
+@router.delete(
+    "/{project_id}/tasks/{task_id}/unlink",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Unlink a task from a project",
+    description="Removes the association between a task and a project.",
+)
+def unlink_task_from_project(
+    project_id: UUID,
+    task_id: UUID,
+    uow: UoWDependency,
+) -> None:
+    UnlinkTaskFromProjectUseCase(uow).execute(project_id, task_id)

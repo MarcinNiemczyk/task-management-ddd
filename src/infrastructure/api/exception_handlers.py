@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 from src.domain.exceptions.base import EntityNotFoundException, DomainException
 from src.domain.exceptions.task_exceptions import (
     TaskDeadlineExceedsProjectDeadlineException,
+    TaskNotLinkedToProjectException,
 )
 
 
@@ -26,6 +27,14 @@ async def domain_exception_handler(
 
 async def task_deadline_exceeds_project_handler(
     request: Request, exc: TaskDeadlineExceedsProjectDeadlineException
+) -> JSONResponse:
+    return JSONResponse(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        content={"detail": str(exc)},
+    )
+
+async def task_not_linked_to_project_exception (
+    request: Request, exc: TaskNotLinkedToProjectException
 ) -> JSONResponse:
     return JSONResponse(
         status_code=status.HTTP_400_BAD_REQUEST,
