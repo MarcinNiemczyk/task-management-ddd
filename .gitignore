@@ -5,3 +5,5 @@ __pycache__/
 todo.md
 task_management.db
 .env
+data/
+.coverage

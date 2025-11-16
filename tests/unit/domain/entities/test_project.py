@@ -157,6 +157,34 @@ class TestProjectEntity:
         assert sample_project.deadline == new_deadline
         assert sample_project.updated_at > original_updated_at
 
+    def test_update_deadline_with_earlier_date_adds_event(self, sample_project):
+        original_event_count = len(sample_project.domain_events)
+        new_deadline = sample_project.deadline.replace(year=sample_project.deadline.year - 1)
+
+        sample_project.update_deadline(new_deadline)
+
+        assert sample_project.deadline == new_deadline
+        assert len(sample_project.domain_events) == original_event_count + 1
+        assert isinstance(sample_project.domain_events[-1], object)
+
+    def test_update_deadline_with_later_date_no_event(self, sample_project):
+        original_event_count = len(sample_project.domain_events)
+        new_deadline = sample_project.deadline.replace(year=sample_project.deadline.year + 1)
+
+        sample_project.update_deadline(new_deadline)
+
+        assert sample_project.deadline == new_deadline
+        assert len(sample_project.domain_events) == original_event_count
+
+    def test_update_deadline_with_equal_date_no_event(self, sample_project):
+        original_event_count = len(sample_project.domain_events)
+        new_deadline = sample_project.deadline
+
+        sample_project.update_deadline(new_deadline)
+
+        assert sample_project.deadline == new_deadline
+        assert len(sample_project.domain_events) == original_event_count
+
     def test_update_title_with_empty_string(self, sample_project):
         sample_project.update_title("")
 
@@ -175,3 +203,30 @@ class TestProjectEntity:
         assert sample_project.id == original_id
         assert sample_project.created_at == original_created_at
         assert sample_project.completed == original_completed
+
+    def test_mark_as_completed_updates_status_and_timestamp(self, sample_project):
+        original_updated_at = sample_project.updated_at
+
+        sample_project.mark_as_completed()
+
+        assert sample_project.completed is True
+        assert sample_project.updated_at != original_updated_at
+
+    def test_mark_as_incomplete_updates_status_and_timestamp(self, sample_project):
+        sample_project.mark_as_completed()
+        original_updated_at = sample_project.updated_at
+
+        sample_project.mark_as_incomplete()
+
+        assert sample_project.completed is False
+        assert sample_project.updated_at != original_updated_at
+
+    def test_clear_domain_events_empties_event_list(self, sample_project):
+        sample_project.update_deadline(
+            sample_project.deadline.replace(year=sample_project.deadline.year - 1)
+        )
+        assert len(sample_project.domain_events) > 0
+
+        sample_project.clear_domain_events()
+
+        assert len(sample_project.domain_events) == 0
