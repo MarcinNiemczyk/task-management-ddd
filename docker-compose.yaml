@@ -1,0 +1,13 @@
+name: task-management
+
+services:
+  api:
+    container_name: task-management-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - /app/.venv
