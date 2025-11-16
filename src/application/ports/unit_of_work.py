@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
-from src.domain.ports.repositories.project_repository import IProjectRepository
-from src.domain.ports.repositories.task_repository import ITaskRepository
+from src.application.ports.repositories.project_repository import IProjectRepository
+from src.application.ports.repositories.task_repository import ITaskRepository
 
 
 class IUnitOfWork(ABC):

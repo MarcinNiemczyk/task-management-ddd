@@ -2,8 +2,8 @@ from typing import Annotated
 
 from fastapi import Depends
 
-from src.domain.ports.config_port import ConfigPort
-from src.domain.ports.unit_of_work import IUnitOfWork
+from src.application.ports.config_port import ConfigPort
+from src.application.ports.unit_of_work import IUnitOfWork
 from src.domain.services.deadline_service import DeadlineValidationService
 from src.infrastructure.config.env_config_service import EnvConfigService
 from src.infrastructure.database.repositories.project_repository import (

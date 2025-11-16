@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from src.domain.entities.task import Task
 from src.domain.exceptions.base import EntityNotFoundException
-from src.domain.ports.repositories.task_repository import ITaskRepository
+from src.application.ports.repositories.task_repository import ITaskRepository
 
 
 class TaskRepository(ITaskRepository):

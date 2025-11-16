@@ -1,7 +1,7 @@
 from uuid import UUID
 
 from src.domain.exceptions.task_exceptions import TaskNotLinkedToProjectException
-from src.domain.ports.unit_of_work import IUnitOfWork
+from src.application.ports.unit_of_work import IUnitOfWork
 
 
 class UnlinkTaskFromProjectUseCase:

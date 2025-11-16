@@ -3,7 +3,7 @@ from datetime import datetime
 from uuid import uuid4
 
 from src.domain.entities.project import Project
-from src.domain.ports.unit_of_work import IUnitOfWork
+from src.application.ports.unit_of_work import IUnitOfWork
 
 
 @dataclass

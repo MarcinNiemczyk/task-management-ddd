@@ -3,7 +3,7 @@ from datetime import datetime
 from uuid import UUID, uuid4
 
 from src.domain.entities.task import Task
-from src.domain.ports.unit_of_work import IUnitOfWork
+from src.application.ports.unit_of_work import IUnitOfWork
 from src.domain.services.deadline_service import DeadlineValidationService
 
 

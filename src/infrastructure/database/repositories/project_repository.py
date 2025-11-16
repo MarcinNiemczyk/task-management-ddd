@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from src.domain.entities.project import Project
 from src.domain.entities.task import Task
 from src.domain.exceptions.base import EntityNotFoundException
-from src.domain.ports.repositories.project_repository import IProjectRepository
+from src.application.ports.repositories.project_repository import IProjectRepository
 
 
 class ProjectRepository(IProjectRepository):

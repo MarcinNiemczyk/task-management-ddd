@@ -1,6 +1,6 @@
 import os
 
-from src.domain.ports.config_port import ConfigPort
+from src.application.ports.config_port import ConfigPort
 
 
 class EnvConfigService(ConfigPort):
