@@ -2,6 +2,8 @@ from typing import Annotated
 
 from fastapi import Depends
 
+from src.infrastructure.celery.event_publisher import EventPublisher
+from src.application.ports.event_publisher import IEventPublisher
 from src.application.ports.config_port import ConfigPort
 from src.application.ports.unit_of_work import IUnitOfWork
 from src.domain.services.deadline_service import DeadlineValidationService
@@ -23,3 +25,4 @@ def get_unit_of_work() -> IUnitOfWork:
 UoWDependency = Annotated[IUnitOfWork, Depends(get_unit_of_work)]
 DeadlineValidationServiceImpl = DeadlineValidationService()
 EnvConfigServiceDependency = Annotated[ConfigPort, Depends(EnvConfigService)]
+EventPublisherDependency = Annotated[IEventPublisher, Depends(EventPublisher)]

@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, registry
 
-DATABASE_URL = "sqlite:///./task_management.db"
+DATABASE_URL = "sqlite:///./data/task_management.db"
 
 engine = create_engine(
     DATABASE_URL,

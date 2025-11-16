@@ -16,7 +16,7 @@ from src.application.use_cases.projects.update_project import (
     UpdateProjectCommand,
     UpdateProjectUseCase,
 )
-from src.infrastructure.api.dependencies import UoWDependency
+from src.infrastructure.api.dependencies import EventPublisherDependency, UoWDependency
 from src.infrastructure.api.schemas.project_schemas import (
     ProjectCreateRequest,
     ProjectResponse,
@@ -91,13 +91,14 @@ def update_project(
     project_id: UUID,
     project_in: ProjectUpdateRequest,
     uow: UoWDependency,
+    event_publisher: EventPublisherDependency,
 ) -> ProjectResponse:
     command = UpdateProjectCommand(
         title=project_in.title,
         deadline=project_in.deadline,
     )
 
-    project = UpdateProjectUseCase(uow).execute(project_id, command)
+    project = UpdateProjectUseCase(uow, event_publisher).execute(project_id, command)
 
     return ProjectResponse.from_entity(project)
 

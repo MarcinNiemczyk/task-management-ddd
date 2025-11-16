@@ -5,3 +5,7 @@ class ConfigPort(ABC):
     @abstractmethod
     def auto_complete_project_on_last_task_done(self) -> bool:
         pass
+    
+    @abstractmethod
+    def get_redis_url(self) -> str:
+        pass
